@@ -1,0 +1,5 @@
+pytorch>=1.0
+torchvision
+numpy
+scipy
+opencv-python
