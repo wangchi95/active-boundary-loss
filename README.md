@@ -5,7 +5,7 @@
 
 By Chi Wang, Yunke Zhang, Miaomiao Cui, Peiran Ren, Yin Yang, Xuansong Xie, Xian-Sheng Hua, Hujun Bao and Weiwei Xu.
 
-This repo is the official implementation of `Active Boundary Loss for Semantic Segmentation` (arXiv:[2102.02696](https://arxiv.org/abs/2102.02696)) accepted by AAAI 2022 (Oral).
+This repo is the official implementation of `Active Boundary Loss for Semantic Segmentation` ([Paper link](https://ojs.aaai.org/index.php/AAAI/article/view/20139); arXiv:[2102.02696](https://arxiv.org/abs/2102.02696)) accepted by AAAI 2022 (Oral).
 
 ## Dependencies
 
