@@ -66,12 +66,12 @@ class ABL(nn.Module):
         eps = 1e-5
         _, _, h, w = logit.shape
         max_N = (h*w) * self.max_N_ratio
-        kl_lr = kl_div(logit[:, :, 1:, :], logit[:, :, :-1, :]).sum(1, keepdim=True)
-        kl_ud = kl_div(logit[:, :, :, 1:], logit[:, :, :, :-1]).sum(1, keepdim=True)
-        kl_lr = torch.nn.functional.pad(
-            kl_lr, [0, 0, 0, 1, 0, 0, 0, 0], mode='constant', value=0)
+        kl_ud = kl_div(logit[:, :, 1:, :], logit[:, :, :-1, :]).sum(1, keepdim=True)
+        kl_lr = kl_div(logit[:, :, :, 1:], logit[:, :, :, :-1]).sum(1, keepdim=True)
         kl_ud = torch.nn.functional.pad(
-            kl_ud, [0, 1, 0, 0, 0, 0, 0, 0], mode='constant', value=0)
+            kl_ud, [0, 0, 0, 1, 0, 0, 0, 0], mode='constant', value=0)
+        kl_lr = torch.nn.functional.pad(
+            kl_lr, [0, 1, 0, 0, 0, 0, 0, 0], mode='constant', value=0)
         kl_combine = kl_lr+kl_ud
         while True: # avoid the case that full image is the same color
             kl_combine_bin = (kl_combine > eps).to(torch.float)
@@ -87,10 +87,10 @@ class ABL(nn.Module):
         return kl_combine_bin
 
     def gt2boundary(self, gt, ignore_label=-1):  # gt NHW
-        gt_lr = gt[:,1:,:]-gt[:,:-1,:]  # NHW
-        gt_ud = gt[:,:,1:]-gt[:,:,:-1]
-        gt_lr = torch.nn.functional.pad(gt_lr, [0,0,0,1,0,0], mode='constant', value=0) != 0 
-        gt_ud = torch.nn.functional.pad(gt_ud, [0,1,0,0,0,0], mode='constant', value=0) != 0
+        gt_ud = gt[:,1:,:]-gt[:,:-1,:]  # NHW
+        gt_lr = gt[:,:,1:]-gt[:,:,:-1]
+        gt_ud = torch.nn.functional.pad(gt_ud, [0,0,0,1,0,0], mode='constant', value=0) != 0 
+        gt_lr = torch.nn.functional.pad(gt_lr, [0,1,0,0,0,0], mode='constant', value=0) != 0
         gt_combine = gt_lr+gt_ud
         del gt_lr
         del gt_ud
